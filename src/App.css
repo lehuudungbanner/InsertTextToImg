@@ -1,5 +1,14 @@
 .App {
   text-align: center;
+  margin-bottom: auto;
+  padding-top: 3vh;
+  margin-bottom: 100px;
+  background-color:lightcyan;
+  height: 100vh;
+}
+
+p{
+  font-weight: bold;
 }
 
 .App-logo {
@@ -35,4 +44,80 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 50vh;
+  justify-content: space-around;
+  margin-top: 8vh;
+  /* flex-wrap: wrap; */
+}
+
+.list {
+  /* width: 20%; */
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  /* justify-content: center;
+  align-self: center; */
+  height: 50vh;
+}
+
+.itemList {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  height: auto;
+}
+
+.image {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.listImage {
+  display: flex;
+  flex-direction: column;
+}
+.listPhone {
+  width: 20%;
+}
+
+.itemFlex {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .listPhone {
+    width: 50%;
+  }
+  .listImage {
+    width: 50%;
+  }
+  .container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .itemFlex {
+    width: 100vw;
+    padding-top: 5px;
+    background-color:lightcyan;
+
+  }
+  .list {
+    height: 30vh;
+  }
+  .App{
+    height: auto;
+  }
+  
 }
