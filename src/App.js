@@ -133,14 +133,12 @@ function App() {
               });
             });
           } else {
-            alert(1);
+            alert("Sai format file !");
             e.preventDefault();
             return;
           }
           setListPhone([...listPhone]);
         } else {
-          alert(12);
-
           e.preventDefault();
         }
       };
