@@ -95,15 +95,22 @@ const textStyle = [
 
 function App() {
   const [listPhone, setListPhone] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(DEFAULT_IMG);
   const [selectedPhoneItem, setSelectedPhoneItem] = useState({});
 
   useEffect(() => {
+    setDefaultState();
+  }, []);
+
+  const setDefaultState = () => {
     const imageItem = listImage.find((item) => item.type == DEFAULT_IMG);
     const style = textStyle.find((item) => item.type == DEFAULT_IMG);
-
     generateImg(imageItem.image, style);
-  }, []);
+    setSelectedPhoneItem({});
+    setSelectedImage(DEFAULT_IMG);
+    const myDiv = document.getElementById("listTelephone");
+    myDiv.scroll({ top: 0, behavior: "smooth" });
+  };
 
   const handleUpload = (e) => {
     var files = e.target.files;
@@ -117,13 +124,16 @@ function App() {
           const wsname = readedData.SheetNames[0];
           const ws = readedData.Sheets[wsname];
           const json = XLSX.utils.sheet_to_json(ws);
-          const isCorrectTemplate = json.every(
-            (item) => item["SIM"] && item["GiÁ"] && item["mạng"]
-          );
+          const headers = XLSX.utils.sheet_to_json(ws, { header: 1 })[0];
+          const isCorrectTemplate =
+            headers.length === 3 &&
+            headers[0]?.toString()?.toUpperCase() === "SIM" &&
+            headers[1]?.toString()?.toUpperCase() === "GIÁ" &&
+            headers[2]?.toString()?.toUpperCase() === "MẠNG";
           if (isCorrectTemplate) {
+            const tempList = [];
             json.forEach((item) => {
-              console.log();
-              listPhone.push({
+              tempList.push({
                 phoneNumber:
                   item["SIM"].toString().charAt(0) !== "0"
                     ? "0" + item["SIM"]
@@ -132,12 +142,13 @@ function App() {
                 type: item["mạng"],
               });
             });
+            setListPhone([...tempList]);
+            setDefaultState();
           } else {
             alert("Sai format file !");
             e.preventDefault();
             return;
           }
-          setListPhone([...listPhone]);
         } else {
           e.preventDefault();
         }
@@ -260,11 +271,12 @@ function App() {
         accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
         onChange={handleUpload}
         style={{ margin: "auto" }}
+        onClick={(e) => (e.target.value = "")}
       />
       <div className="container">
         <div className="listPhone">
           <p>Danh sách số điện thoại</p>
-          <div className="list">
+          <div className="list" id="listTelephone">
             {listPhone.length > 0 ? (
               listPhone.map((item, index) => (
                 <div
