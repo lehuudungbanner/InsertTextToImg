@@ -1,33 +1,100 @@
 import logo from "./logo.svg";
 import "./App.css";
 import * as XLSX from "xlsx";
-import God from "../src/assets/moneyGod.jpg";
-import Crown from "../src/assets/imageCrown.jpg";
+import God from "../src/assets/final_5.jpg";
+import Final1 from "../src/assets/final_1.jpg";
+import Final2 from "../src/assets/final_2.jpg";
+import Final3 from "../src/assets/final_3.jpeg";
+import Final4 from "../src/assets/final_4.jpg";
+
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const DEFAULT_IMG = 1;
+const DEFAULT_IMG = 0;
+const RED = "#DF0334";
 const listImage = [
-  { image: God, type: 1 },
-  { image: Crown, type: 2 },
+  { image: God, type: 0 },
+  { image: Final1, type: 1 },
+  { image: Final2, type: 2 },
+  { image: Final3, type: 3 },
+  { image: Final4, type: 4 },
 ];
-
 const textStyle = [
   {
+    type: 0,
+    downloadStyle: {
+      phoneNumberCoor: { x: 340, y: 970, fontSize: "150px", color: RED },
+      typeCoor: { x: 50, y: 150, fontSize: "90px", color: RED },
+      priceCoor: { x: 1150, y: 150, fontSize: "90px", color: RED },
+    },
+    previewStyle: {
+      phoneNumberCoor: { x: 70, y: 240, fontSize: "40px", color: RED },
+      typeCoor: { x: 15, y: 40, fontSize: "28px", color: RED },
+      priceCoor: { x: 270, y: 40, fontSize: "28px", color: RED },
+      scale: 0.25,
+    },
+  },
+  {
     type: 1,
-    downloadStyle: { x: 380, y: 920, fontSize: "70px" },
-    previewStyle: { x: 120, y: 280, fontSize: "20px", scale: 0.3 },
+    downloadStyle: {
+      phoneNumberCoor: { x: 150, y: 425, fontSize: "170px", color: RED },
+      typeCoor: { x: 30, y: 150, fontSize: "80px", color: "black" },
+      priceCoor: { x: 1030, y: 150, fontSize: "80px", color: "black" },
+    },
+    previewStyle: {
+      phoneNumberCoor: { x: 35, y: 127, fontSize: "55px", color: RED },
+      typeCoor: { x: 10, y: 45, fontSize: "30px", color: "black" },
+      priceCoor: { x: 280, y: 45, fontSize: "30px", color: "black" },
+      scale: 0.3,
+    },
   },
   {
     type: 2,
-    downloadStyle: { x: 200, y: 630, fontSize: "45px" },
-    previewStyle: { x: 120, y: 315, fontSize: "20px", scale: 0.5 },
+    downloadStyle: {
+      phoneNumberCoor: { x: 220, y: 330, fontSize: "150px", color: RED },
+      typeCoor: { x: 90, y: 100, fontSize: "80px", color: RED },
+      priceCoor: { x: 1000, y: 100, fontSize: "80px", color: RED },
+    },
+    previewStyle: {
+      phoneNumberCoor: { x: 50, y: 100, fontSize: "50px", color: RED },
+      typeCoor: { x: 30, y: 30, fontSize: "25px", color: RED },
+      priceCoor: { x: 300, y: 30, fontSize: "25px", color: RED },
+      scale: 0.3,
+    },
+  },
+  {
+    type: 3,
+    downloadStyle: {
+      phoneNumberCoor: { x: 100, y: 930, fontSize: "150px", color: RED },
+      typeCoor: { x: 30, y: 130, fontSize: "90px", color: RED },
+      priceCoor: { x: 820, y: 130, fontSize: "90px", color: RED },
+    },
+    previewStyle: {
+      phoneNumberCoor: { x: 50, y: 325, fontSize: "50px", color: RED },
+      typeCoor: { x: 20, y: 40, fontSize: "32px", color: RED },
+      priceCoor: { x: 290, y: 40, fontSize: "32px", color: RED },
+      scale: 0.35,
+    },
+  },
+  {
+    type: 4,
+    downloadStyle: {
+      phoneNumberCoor: { x: 150, y: 590, fontSize: "140px", color: RED },
+      typeCoor: { x: 30, y: 100, fontSize: "80px", color: RED },
+      priceCoor: { x: 850, y: 100, fontSize: "80px", color: RED },
+    },
+    previewStyle: {
+      phoneNumberCoor: { x: 45, y: 190, fontSize: "50px", color: RED },
+      typeCoor: { x: 15, y: 45, fontSize: "35px", color: RED },
+      priceCoor: { x: 260, y: 45, fontSize: "35px", color: RED },
+      scale: 0.33,
+    },
   },
 ];
 
 function App() {
   const [listPhone, setListPhone] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(0);
   const [selectedPhoneItem, setSelectedPhoneItem] = useState({});
 
   useEffect(() => {
@@ -54,23 +121,37 @@ function App() {
           );
           if (isCorrectTemplate) {
             json.forEach((item) => {
+              console.log();
               listPhone.push({
-                phoneNumber: "0" + item["SIM"],
+                phoneNumber:
+                  item["SIM"].toString().charAt(0) !== "0"
+                    ? "0" + item["SIM"]
+                    : item["SIM"],
                 price: item["GiÁ"],
                 type: item["mạng"],
               });
             });
           } else {
+            alert(1);
             e.preventDefault();
             return;
           }
           setListPhone([...listPhone]);
         } else {
+          alert(12);
+
           e.preventDefault();
         }
       };
       reader.readAsBinaryString(f);
     }
+  };
+
+  const draw = (value, item, ctx) => {
+    const { x, y, fontSize, color } = item;
+    ctx.font = fontSize + " arial";
+    ctx.fillStyle = color;
+    ctx.fillText(value, x, y);
   };
 
   const generateImg = (image, style, itemPhone) => {
@@ -83,7 +164,7 @@ function App() {
       let loadedImageWidth = img.width;
       let loadedImageHeight = img.height;
       const { previewStyle = {} } = style || {};
-      const { x, y, fontSize, scale } = previewStyle;
+      const { phoneNumberCoor, typeCoor, priceCoor, scale } = previewStyle;
       // Set the canvas to the same size as the image.
       canvas.width = loadedImageWidth * scale;
       canvas.height = loadedImageHeight * scale;
@@ -99,10 +180,12 @@ function App() {
       if (itemPhone) {
         const { phoneNumber, price, type } = itemPhone;
 
-        ctx.font = fontSize + " serif";
-        ctx.fillStyle = "red";
-
-        ctx.fillText(type + "-" + phoneNumber + "-" + price, x, y);
+        //Draw type
+        draw(type, typeCoor, ctx);
+        //Draw price
+        draw(price, priceCoor, ctx);
+        //Draw phone number
+        draw(phoneNumber, phoneNumberCoor, ctx);
       }
     };
 
@@ -112,7 +195,7 @@ function App() {
   const generateDownloadImg = (image, style, itemPhone) => {
     const canvas = document.getElementById("canvasDownload");
     const { downloadStyle = {} } = style || {};
-    const { x, y, fontSize } = downloadStyle;
+    const { phoneNumberCoor, typeCoor, priceCoor } = downloadStyle;
     const ctx = canvas.getContext("2d");
 
     let img = new Image();
@@ -128,10 +211,13 @@ function App() {
       ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
       if (itemPhone) {
         const { phoneNumber, price, type } = itemPhone;
-        ctx.font = fontSize + " serif";
-        ctx.fillStyle = "red";
 
-        ctx.fillText(type + "-" + phoneNumber + "-" + price, x, y);
+        //Draw type
+        draw(type, typeCoor, ctx);
+        //Draw price
+        draw(price, priceCoor, ctx);
+        //Draw phone number
+        draw(phoneNumber, phoneNumberCoor, ctx);
         // (B3) "FORCE DOWNLOAD"
       }
     };
@@ -147,10 +233,11 @@ function App() {
     generateDownloadImg(imageItem.image, style, item);
   };
 
-  const handleChange = (event) => {
-    setSelectedImage(event.target.value);
-    const imageItem = listImage.find((item) => item.type == event.target.value);
-    const style = textStyle.find((item) => item.type == event.target.value);
+  const handleChange = (value) => {
+    setSelectedImage(value);
+    const imageItem = listImage.find((item) => item.type == value);
+    const style = textStyle.find((item) => item.type == value);
+
     generateImg(imageItem.image, style);
     generateDownloadImg(imageItem.image, style);
   };
@@ -183,6 +270,15 @@ function App() {
                   className="itemList"
                   key={index}
                   onClick={() => onSelectItem(item)}
+                  style={
+                    item.phoneNumber === selectedPhoneItem.phoneNumber
+                      ? {
+                          color: "white",
+                          backgroundColor: "#94ccf5",
+                          fontWeight: "bold",
+                        }
+                      : {}
+                  }
                 >
                   {item.phoneNumber}
                 </div>
@@ -194,25 +290,29 @@ function App() {
         </div>
         <div className="listImage">
           <p>Danh sách ảnh</p>
-          {listImage.map((item) => (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              <input
-                type="radio"
-                name="image_select"
-                value={item.type}
-                onChange={(e) => handleChange(e)}
-                checked={selectedImage == item.type}
-              />
-              <img src={item.image} className="image" />
-            </div>
-          ))}
+          <div className="list">
+            {listImage.map((item, index) => (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginBottom: "10px",
+                }}
+                key={index}
+                onClick={() => handleChange(item.type)}
+              >
+                <input
+                  type="radio"
+                  name="image_select"
+                  value={item.type}
+                  checked={selectedImage == item.type}
+                />
+                <img src={item.image} className="image img-thumbnail" />
+              </div>
+            ))}
+          </div>
         </div>
         <div className="itemFlex">
           <canvas
