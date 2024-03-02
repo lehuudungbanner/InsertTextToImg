@@ -12,6 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const DEFAULT_IMG = 0;
 const RED = "#DF0334";
+const WHITE = "white ";
 const listImage = [
   { image: God, type: 0 },
   { image: Final1, type: 1 },
@@ -79,14 +80,14 @@ const textStyle = [
   {
     type: 4,
     downloadStyle: {
-      phoneNumberCoor: { x: 150, y: 590, fontSize: "140px", color: RED },
-      typeCoor: { x: 30, y: 100, fontSize: "80px", color: RED },
-      priceCoor: { x: 850, y: 100, fontSize: "80px", color: RED },
+      phoneNumberCoor: { x: 150, y: 590, fontSize: "140px", color: WHITE },
+      typeCoor: { x: 30, y: 100, fontSize: "80px", color: WHITE },
+      priceCoor: { x: 850, y: 100, fontSize: "80px", color: WHITE },
     },
     previewStyle: {
-      phoneNumberCoor: { x: 45, y: 190, fontSize: "50px", color: RED },
-      typeCoor: { x: 15, y: 45, fontSize: "35px", color: RED },
-      priceCoor: { x: 260, y: 45, fontSize: "35px", color: RED },
+      phoneNumberCoor: { x: 45, y: 190, fontSize: "50px", color: WHITE },
+      typeCoor: { x: 15, y: 45, fontSize: "35px", color: WHITE },
+      priceCoor: { x: 260, y: 45, fontSize: "35px", color: WHITE },
       scale: 0.33,
     },
   },
@@ -149,9 +150,11 @@ function App() {
 
   const draw = (value, item, ctx) => {
     const { x, y, fontSize, color } = item;
-    ctx.font = fontSize + " arial";
-    ctx.fillStyle = color;
-    ctx.fillText(value, x, y);
+    if (value) {
+      ctx.font = fontSize + " arial";
+      ctx.fillStyle = color;
+      ctx.fillText(value, x, y);
+    }
   };
 
   const generateImg = (image, style, itemPhone) => {
@@ -238,8 +241,8 @@ function App() {
     const imageItem = listImage.find((item) => item.type == value);
     const style = textStyle.find((item) => item.type == value);
 
-    generateImg(imageItem.image, style);
-    generateDownloadImg(imageItem.image, style);
+    generateImg(imageItem.image, style, selectedPhoneItem);
+    generateDownloadImg(imageItem.image, style, selectedPhoneItem);
   };
 
   const onDownload = () => {
