@@ -343,10 +343,7 @@ function App() {
             height="100"
             style={{ objectFit: "contain" }}
           ></canvas>
-          <canvas
-            id="canvasDownload"
-            //  style={{ display: "none" }}
-          />
+          <canvas id="canvasDownload" style={{ display: "none" }} />
           <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
             <button
               className="btn btn-primary"
