@@ -39,13 +39,13 @@ const textStyle = [
     type: 1,
     downloadStyle: {
       phoneNumberCoor: { x: 150, y: 425, fontSize: "170px", color: RED },
-      typeCoor: { x: 30, y: 150, fontSize: "80px", color: "black" },
-      priceCoor: { x: 1030, y: 150, fontSize: "80px", color: "black" },
+      typeCoor: { x: 30, y: 150, fontSize: "100px", color: "black" },
+      priceCoor: { x: 900, y: 550, fontSize: "100px", color: "black" },
     },
     previewStyle: {
       phoneNumberCoor: { x: 35, y: 127, fontSize: "55px", color: RED },
       typeCoor: { x: 10, y: 45, fontSize: "30px", color: "black" },
-      priceCoor: { x: 280, y: 45, fontSize: "30px", color: "black" },
+      priceCoor: { x: 260, y: 165, fontSize: "30px", color: "black" },
       scale: 0.3,
     },
   },
@@ -67,13 +67,13 @@ const textStyle = [
     type: 3,
     downloadStyle: {
       phoneNumberCoor: { x: 100, y: 930, fontSize: "150px", color: RED },
-      typeCoor: { x: 30, y: 130, fontSize: "90px", color: RED },
-      priceCoor: { x: 820, y: 130, fontSize: "90px", color: RED },
+      typeCoor: { x: 30, y: 750, fontSize: "85px", color: RED },
+      priceCoor: { x: 780, y: 1023, fontSize: "85px", color: WHITE },
     },
     previewStyle: {
-      phoneNumberCoor: { x: 50, y: 325, fontSize: "50px", color: RED },
-      typeCoor: { x: 20, y: 40, fontSize: "32px", color: RED },
-      priceCoor: { x: 290, y: 40, fontSize: "32px", color: RED },
+      phoneNumberCoor: { x: 30, y: 325, fontSize: "50px", color: RED },
+      typeCoor: { x: 20, y: 265, fontSize: "32px", color: RED },
+      priceCoor: { x: 275, y: 360, fontSize: "28px", color: WHITE },
       scale: 0.35,
     },
   },
@@ -133,13 +133,14 @@ function App() {
           if (isCorrectTemplate) {
             const tempList = [];
             json.forEach((item) => {
+              console.log(item);
               tempList.push({
                 phoneNumber:
                   item["SIM"].toString().charAt(0) !== "0"
                     ? "0" + item["SIM"]
                     : item["SIM"],
-                price: item["GiÁ"],
-                type: item["mạng"],
+                price: item["GIÁ"],
+                type: item["MẠNG"],
               });
             });
             setListPhone([...tempList]);
@@ -157,12 +158,14 @@ function App() {
     }
   };
 
-  const draw = (value, item, ctx) => {
+  const draw = (value, item, ctx, canvas, isPhone) => {
     const { x, y, fontSize, color } = item;
     if (value) {
       ctx.font = fontSize + " arial";
       ctx.fillStyle = color;
-      ctx.fillText(value, x, y);
+      const textWidth = ctx.measureText(value).width;
+
+      ctx.fillText(value, isPhone ? canvas.width / 2 - textWidth / 2 : x, y);
     }
   };
 
@@ -193,18 +196,18 @@ function App() {
         const { phoneNumber, price, type } = itemPhone;
 
         //Draw type
-        draw(type, typeCoor, ctx);
+        draw(type, typeCoor, ctx, canvas);
         //Draw price
-        draw(price, priceCoor, ctx);
+        draw(price, priceCoor, ctx, canvas);
         //Draw phone number
-        draw(phoneNumber, phoneNumberCoor, ctx);
+        draw(phoneNumber, phoneNumberCoor, ctx, canvas, true);
       }
     };
 
     img.src = image;
   };
 
-  const generateDownloadImg = (image, style, itemPhone) => {
+  const generateDownloadImg = (image, style, itemPhone, isDownloadAll) => {
     const canvas = document.getElementById("canvasDownload");
     const { downloadStyle = {} } = style || {};
     const { phoneNumberCoor, typeCoor, priceCoor } = downloadStyle;
@@ -221,19 +224,20 @@ function App() {
 
       // Draw the image on to the canvas.
       ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
+
       if (itemPhone) {
         const { phoneNumber, price, type } = itemPhone;
 
         //Draw type
-        draw(type, typeCoor, ctx);
+        draw(type, typeCoor, ctx, canvas);
         //Draw price
-        draw(price, priceCoor, ctx);
+        draw(price, priceCoor, ctx, canvas);
         //Draw phone number
-        draw(phoneNumber, phoneNumberCoor, ctx);
+        draw(phoneNumber, phoneNumberCoor, ctx, canvas, true);
         // (B3) "FORCE DOWNLOAD"
+        if (isDownloadAll) onDownload();
       }
     };
-
     img.src = image;
   };
 
@@ -261,6 +265,15 @@ function App() {
     anchor.download = "image.jpeg";
     anchor.click();
     anchor.remove();
+  };
+
+  const onDownloadAll = () => {
+    const style = textStyle.find((item) => item.type == selectedImage);
+    const imageItem = listImage.find((item) => item.type == selectedImage);
+    listPhone.forEach((itemPhone) => {
+      generateDownloadImg(imageItem.image, style, itemPhone, true);
+    });
+    setDefaultState();
   };
 
   return (
@@ -335,13 +348,24 @@ function App() {
             style={{ objectFit: "contain" }}
           ></canvas>
           <canvas id="canvasDownload" style={{ display: "none" }} />
-          <button
-            className="btn btn-primary"
-            onClick={() => onDownload()}
-            style={{ marginTop: "10px" }}
-          >
-            Download
-          </button>
+          <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+            <button
+              className="btn btn-primary"
+              onClick={() => onDownload()}
+              style={{ marginTop: "10px" }}
+              disabled={listPhone.length === 0}
+            >
+              Download
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => onDownloadAll()}
+              style={{ marginTop: "10px" }}
+              disabled={listPhone.length === 0}
+            >
+              Download All
+            </button>
+          </div>
         </div>
       </div>
     </div>
