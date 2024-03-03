@@ -68,12 +68,12 @@ const textStyle = [
     downloadStyle: {
       phoneNumberCoor: { x: 100, y: 930, fontSize: "150px", color: RED },
       typeCoor: { x: 30, y: 750, fontSize: "85px", color: RED },
-      priceCoor: { x: 780, y: 1023, fontSize: "85px", color: WHITE },
+      priceCoor: { x: 780, y: 1060, fontSize: "85px", color: RED },
     },
     previewStyle: {
       phoneNumberCoor: { x: 30, y: 325, fontSize: "50px", color: RED },
       typeCoor: { x: 20, y: 265, fontSize: "32px", color: RED },
-      priceCoor: { x: 275, y: 360, fontSize: "28px", color: WHITE },
+      priceCoor: { x: 275, y: 370, fontSize: "28px", color: RED },
       scale: 0.35,
     },
   },
@@ -133,12 +133,8 @@ function App() {
           if (isCorrectTemplate) {
             const tempList = [];
             json.forEach((item) => {
-              console.log(item);
               tempList.push({
-                phoneNumber:
-                  item["SIM"].toString().charAt(0) !== "0"
-                    ? "0" + item["SIM"]
-                    : item["SIM"],
+                phoneNumber: item["SIM"],
                 price: item["GIÁ"],
                 type: item["MẠNG"],
               });
@@ -347,7 +343,10 @@ function App() {
             height="100"
             style={{ objectFit: "contain" }}
           ></canvas>
-          <canvas id="canvasDownload" style={{ display: "none" }} />
+          <canvas
+            id="canvasDownload"
+            //  style={{ display: "none" }}
+          />
           <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
             <button
               className="btn btn-primary"
