@@ -30,12 +30,12 @@ const textStyle = [
     downloadStyle: {
       phoneNumberCoor: { x: 100, y: 630, fontSize: "90px", color: RED },
       typeCoor: { x: 50, y: 150, fontSize: "90px", color: RED },
-      priceCoor: { x: 121, y: 496, fontSize: "45px", color: RED },
+      priceCoor: { x: 132, y: 496, fontSize: "43px", color: RED },
     },
     previewStyle: {
       phoneNumberCoor: { x: 70, y: 315, fontSize: "40px", color: RED },
       typeCoor: { x: 15, y: 0, fontSize: "28px", color: RED },
-      priceCoor: { x: 60, y: 247, fontSize: "20px", color: RED },
+      priceCoor: { x: 65, y: 248, fontSize: "21px", color: RED },
       scale: 0.5,
     },
   },
@@ -44,12 +44,12 @@ const textStyle = [
     downloadStyle: {
       phoneNumberCoor: { x: 150, y: 500, fontSize: "90px", color: RED },
       typeCoor: { x: 30, y: 150, fontSize: "100px", color: RED },
-      priceCoor: { x: 476, y: 300, fontSize: "43px", color: RED },
+      priceCoor: { x: 485, y: 303, fontSize: "43.5px", color: RED },
     },
     previewStyle: {
       phoneNumberCoor: { x: 35, y: 250, fontSize: "45px", color: RED },
       typeCoor: { x: 10, y: 45, fontSize: "30px", color: RED },
-      priceCoor: { x: 240, y: 150, fontSize: "20px", color: RED },
+      priceCoor: { x: 241, y: 151, fontSize: "22px", color: RED },
       scale: 0.5,
     },
   },
@@ -58,7 +58,7 @@ const textStyle = [
     downloadStyle: {
       phoneNumberCoor: { x: 0, y: 905, fontSize: "130px", color: RED },
       typeCoor: { x: 90, y: 100, fontSize: "80px", color: RED },
-      priceCoor: { x: 380, y: 1280, fontSize: "70px", color: RED },
+      priceCoor: { x: 390, y: 1284, fontSize: "70px", color: RED },
     },
     previewStyle: {
       phoneNumberCoor: {
@@ -68,7 +68,7 @@ const textStyle = [
         color: RED,
       },
       typeCoor: { x: 30, y: 30, fontSize: "25px", color: RED },
-      priceCoor: { x: 95, y: 320, fontSize: "18px", color: RED },
+      priceCoor: { x: 94, y: 322, fontSize: "19px", color: RED },
       scale: 0.25,
     },
   },
@@ -77,12 +77,12 @@ const textStyle = [
     downloadStyle: {
       phoneNumberCoor: { x: 100, y: 450, fontSize: "70px", color: RED },
       typeCoor: { x: 30, y: 750, fontSize: "85px", color: RED },
-      priceCoor: { x: 530, y: 540, fontSize: "45px", color: RED },
+      priceCoor: { x: 533, y: 544, fontSize: "46.5px", color: RED },
     },
     previewStyle: {
       phoneNumberCoor: { x: 30, y: 180, fontSize: "30px", color: RED },
       typeCoor: { x: 20, y: 265, fontSize: "32px", color: RED },
-      priceCoor: { x: 210, y: 218, fontSize: "18px", color: RED },
+      priceCoor: { x: 213, y: 218, fontSize: "19px", color: RED },
       scale: 0.4,
     },
   },
@@ -91,12 +91,12 @@ const textStyle = [
     downloadStyle: {
       phoneNumberCoor: { x: 150, y: 565, fontSize: "105px", color: RED },
       typeCoor: { x: 30, y: 100, fontSize: "80px", color: RED },
-      priceCoor: { x: 280, y: 810, fontSize: "55px", color: RED },
+      priceCoor: { x: 279, y: 810, fontSize: "57px", color: RED },
     },
     previewStyle: {
       phoneNumberCoor: { x: 145, y: 225, fontSize: "42px", color: RED },
       typeCoor: { x: 15, y: 45, fontSize: "35px", color: RED },
-      priceCoor: { x: 110, y: 325, fontSize: "22px", color: RED },
+      priceCoor: { x: 112, y: 325, fontSize: "23px", color: RED },
       scale: 0.4,
     },
   },
@@ -151,11 +151,13 @@ function App() {
           if (isCorrectTemplate) {
             const tempList = [];
             json.forEach((item) => {
-              const price = item["GIÁ"]?.replace(/ /g, "");
-              const beforeText = price?.length >= 5 ? "" : "  ";
+              const price = item["GIÁ"]?.replace(/ /g, "")?.toLowerCase();
+              //              const beforeText = price?.length > 4 ? "" : "  ";
               tempList.push({
                 phoneNumber: item["SIM"],
-                price: beforeText + "Giá: " + price,
+                price:
+                  //  beforeText +
+                  "Giá: " + price,
                 // type: item["MẠNG"],
               });
             });
