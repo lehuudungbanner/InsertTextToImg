@@ -35,7 +35,7 @@ const textStyle = [
     previewStyle: {
       phoneNumberCoor: { x: 70, y: 315, fontSize: "40px", color: RED },
       typeCoor: { x: 15, y: 0, fontSize: "28px", color: RED },
-      priceCoor: { x: 65, y: 247, fontSize: "20px", color: RED },
+      priceCoor: { x: 60, y: 247, fontSize: "20px", color: RED },
       scale: 0.5,
     },
   },
@@ -151,9 +151,11 @@ function App() {
           if (isCorrectTemplate) {
             const tempList = [];
             json.forEach((item) => {
+              const price = item["GIÁ"]?.replace(/ /g, "");
+              const beforeText = price?.length >= 5 ? "" : "  ";
               tempList.push({
                 phoneNumber: item["SIM"],
-                price: item["GIÁ"],
+                price: beforeText + "Giá: " + price,
                 // type: item["MẠNG"],
               });
             });
