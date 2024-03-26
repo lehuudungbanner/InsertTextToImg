@@ -9,6 +9,7 @@ import Final4 from "../src/assets/img_10.jpg";
 
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import JSZip from "jszip";
 
 const DEFAULT_IMG = 0;
 const SPECIAL_IMG = 2;
@@ -101,15 +102,28 @@ const textStyle = [
     },
   },
 ];
-
 function App() {
   const [listPhone, setListPhone] = useState([]);
   const [selectedImage, setSelectedImage] = useState(DEFAULT_IMG);
   const [selectedPhoneItem, setSelectedPhoneItem] = useState({});
+  const [listImages, setListImages] = useState([]);
+  const [isDownload, setIsDownload] = useState(false);
 
   useEffect(() => {
     setDefaultState();
   }, []);
+
+  useEffect(() => {
+    if (
+      listImages.length === listPhone.length &&
+      listPhone.length > 0 &&
+      listImages.length > 0 &&
+      isDownload
+    ) {
+      createZip(listImages);
+      setDefaultState();
+    }
+  }, [listImages]);
 
   useEffect(() => {
     const imageItem = listImage.find((item) => item.type == selectedImage);
@@ -125,8 +139,10 @@ function App() {
     generateImg(imageItem.image, style);
     setSelectedPhoneItem({});
     setSelectedImage(DEFAULT_IMG);
+    setListImages([]);
     const myDiv = document.getElementById("listTelephone");
     myDiv.scroll({ top: 0, behavior: "smooth" });
+    setIsDownload(false);
   };
 
   const handleUpload = (e) => {
@@ -277,7 +293,7 @@ function App() {
         //Draw phone number
         drawDL(phoneNumber, phoneNumberCoor, ctx, canvas, true);
         // (B3) "FORCE DOWNLOAD"
-        if (isDownloadAll) onDownload();
+        if (isDownloadAll) onDownload(isDownloadAll);
       }
     };
     img.src = image;
@@ -291,26 +307,59 @@ function App() {
     setSelectedImage(value);
   };
 
-  const onDownload = () => {
+  const onDownload = (isDownloadAll) => {
     const canvas = document.getElementById("canvasDownload");
-    let anchor = document.createElement("a");
-    anchor.href = canvas.toDataURL("image/jpeg");
-    anchor.download = "image.jpeg";
-    anchor.click();
-    anchor.remove();
+    if (isDownloadAll) {
+      const imageData = canvas.toDataURL("image/png");
+      const img = document.createElement("img");
+      img.src = imageData;
+      listImages.push(img);
+      setListImages([...listImages]);
+    } else {
+      let anchor = document.createElement("a");
+      anchor.href = canvas.toDataURL("image/jpeg");
+      anchor.download = "image.jpeg";
+      anchor.click();
+      anchor.remove();
+    }
   };
 
   const onDownloadAll = () => {
+    setIsDownload(true);
+    setListImages([]);
     const style = textStyle.find((item) => item.type == selectedImage);
     const imageItem = listImage.find((item) => item.type == selectedImage);
     listPhone.forEach((itemPhone) => {
       generateDownloadImg(imageItem.image, style, itemPhone, true);
     });
-    setDefaultState();
+  };
+
+  const createZip = (images) => {
+    const zip = new JSZip();
+    setIsDownload(true);
+    images.forEach((img, index) => {
+      zip.file(`image_${index + 1}.png`, img.currentSrc.split("base64,")[1], {
+        base64: true,
+      });
+    });
+
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      let anchor = document.createElement("a");
+      anchor.href = URL.createObjectURL(content);
+      anchor.download = "images.zip";
+      anchor.click();
+      anchor.remove();
+      // const downloadLink = document.getElementById("downloadLink");
+      // downloadLink.href = URL.createObjectURL(content);
+    });
   };
 
   return (
     <div className="App">
+      {isDownload && (
+        <h1 style={{ display: "block", color: "red" }}>Đang download .....</h1>
+      )}
+
       <input
         id="inputId"
         type="file"
