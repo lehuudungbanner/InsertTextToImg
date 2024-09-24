@@ -6,6 +6,8 @@ import Final1 from "../src/assets/img_7.jpg";
 import Final2 from "../src/assets/img_8.jpg";
 import Final3 from "../src/assets/img_9.jpg";
 import Final4 from "../src/assets/img_10.jpg";
+import Image11 from "../src/assets/img_11.jpg";
+import Image12 from "../src/assets/img_12.jpg";
 
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -24,6 +26,8 @@ const listImage = [
   { image: Final2, type: 2 },
   { image: Final3, type: 3 },
   { image: Final4, type: 4 },
+  { image: Image11, type: 5 },
+  { image: Image12, type: 6 },
 ];
 const textStyle = [
   {
@@ -98,6 +102,34 @@ const textStyle = [
       phoneNumberCoor: { x: 145, y: 225, fontSize: "42px", color: RED },
       typeCoor: { x: 15, y: 45, fontSize: "35px", color: RED },
       priceCoor: { x: 112, y: 325, fontSize: "23px", color: RED },
+      scale: 0.4,
+    },
+  },
+  {
+    type: 5,
+    downloadStyle: {
+      phoneNumberCoor: { x: 150, y: 365, fontSize: "80px", color: RED },
+      typeCoor: { x: 30, y: 100, fontSize: "80px", color: RED },
+      priceCoor: { x: 510, y: 470, fontSize: "50px", color: RED },
+    },
+    previewStyle: {
+      phoneNumberCoor: { x: 145, y: 140, fontSize: "30px", color: RED },
+      typeCoor: { x: 15, y: 45, fontSize: "35px", color: RED },
+      priceCoor: { x: 205, y: 190, fontSize: "20px", color: RED },
+      scale: 0.4,
+    },
+  },
+  {
+    type: 6,
+    downloadStyle: {
+      phoneNumberCoor: { x: 150, y: 325, fontSize: "90px", color: RED },
+      typeCoor: { x: 30, y: 100, fontSize: "80px", color: RED },
+      priceCoor: { x: 530, y: 432, fontSize: "40px", color: RED },
+    },
+    previewStyle: {
+      phoneNumberCoor: { x: 145, y: 135, fontSize: "35px", color: RED },
+      typeCoor: { x: 15, y: 45, fontSize: "35px", color: RED },
+      priceCoor: { x: 215, y: 173, fontSize: "15px", color: RED },
       scale: 0.4,
     },
   },
@@ -349,8 +381,6 @@ function App() {
       anchor.download = "images.zip";
       anchor.click();
       anchor.remove();
-      // const downloadLink = document.getElementById("downloadLink");
-      // downloadLink.href = URL.createObjectURL(content);
     });
   };
 
