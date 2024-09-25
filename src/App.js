@@ -18,7 +18,10 @@ const SPECIAL_IMG = 2;
 const SPECIAL_IMG_2 = 4;
 
 const RED = "#DF0334";
+const RED_2 = "#dd000d";
+const YELLOW_2 = "#fcda4c";
 const WHITE = "white ";
+const YELLOW = "#fdf905";
 
 const listImage = [
   { image: God, type: 0 },
@@ -108,28 +111,28 @@ const textStyle = [
   {
     type: 5,
     downloadStyle: {
-      phoneNumberCoor: { x: 150, y: 365, fontSize: "80px", color: RED },
-      typeCoor: { x: 30, y: 100, fontSize: "80px", color: RED },
-      priceCoor: { x: 510, y: 470, fontSize: "50px", color: RED },
+      phoneNumberCoor: { x: 150, y: 365, fontSize: "110px", color: YELLOW },
+      typeCoor: { x: 30, y: 100, fontSize: "80px", color: YELLOW },
+      priceCoor: { x: 510, y: 470, fontSize: "47px", color: YELLOW },
     },
     previewStyle: {
-      phoneNumberCoor: { x: 145, y: 140, fontSize: "30px", color: RED },
-      typeCoor: { x: 15, y: 45, fontSize: "35px", color: RED },
-      priceCoor: { x: 205, y: 190, fontSize: "20px", color: RED },
+      phoneNumberCoor: { x: 145, y: 147, fontSize: "45px", color: YELLOW },
+      typeCoor: { x: 15, y: 45, fontSize: "35px", color: YELLOW },
+      priceCoor: { x: 205, y: 188, fontSize: "19px", color: YELLOW },
       scale: 0.4,
     },
   },
   {
     type: 6,
     downloadStyle: {
-      phoneNumberCoor: { x: 150, y: 325, fontSize: "90px", color: RED },
-      typeCoor: { x: 30, y: 100, fontSize: "80px", color: RED },
-      priceCoor: { x: 530, y: 432, fontSize: "40px", color: RED },
+      phoneNumberCoor: { x: 150, y: 350, fontSize: "140px", color: YELLOW_2 },
+      typeCoor: { x: 30, y: 100, fontSize: "80px", color: YELLOW_2 },
+      priceCoor: { x: 530, y: 433, fontSize: "45px", color: RED_2 },
     },
     previewStyle: {
-      phoneNumberCoor: { x: 145, y: 135, fontSize: "35px", color: RED },
-      typeCoor: { x: 15, y: 45, fontSize: "35px", color: RED },
-      priceCoor: { x: 215, y: 173, fontSize: "15px", color: RED },
+      phoneNumberCoor: { x: 145, y: 138, fontSize: "53px", color: YELLOW_2 },
+      typeCoor: { x: 15, y: 45, fontSize: "35px", color: YELLOW_2 },
+      priceCoor: { x: 210, y: 173, fontSize: "18px", color: RED_2 },
       scale: 0.4,
     },
   },
@@ -228,12 +231,14 @@ function App() {
     const { x, y, fontSize, color } = item;
 
     if (value) {
-      ctx.font = fontSize + " arial";
+      ctx.font = fontSize + " arial ";
       ctx.fillStyle = color;
       const textWidth = ctx.measureText(value).width;
+
+      const isCenter = selectedImage === 5 || selectedImage === 6;
       ctx.fillText(
         value,
-        isPhone ? canvas.width / 2 - textWidth / 2 + specialVal : x,
+        isPhone || isCenter ? canvas.width / 2 - textWidth / 2 + specialVal : x,
         y
       );
     }
